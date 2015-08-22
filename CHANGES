@@ -1,3 +1,6 @@
+2.8.3 2015-08-22
+- revert from deletion
+
 2.8.2 2015-08-10
 - Fix a encoding problem in manager
 
