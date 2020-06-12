@@ -1,2 +1,2 @@
-python3 shadowsocks/server.py -p 4567 -k password -vv
+python3 shadowsocks/server.py -p 443 -k password -d start
 
