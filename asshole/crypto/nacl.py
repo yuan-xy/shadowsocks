@@ -61,7 +61,7 @@ class NaclDecoder(NaclCrypto):
             try:
                 dstr = self.get_decode_box().decrypt(buffer[2:size+2])
             except Exception:
-                print("NaclDecoderERROR", size, len(buffer), len(self.encryptor._decrypt_buf))
+                logging.error("NaclDecoderERROR", size, len(buffer), len(self.encryptor._decrypt_buf))
                 self.encryptor._decrypt_buf = b''
                 return bytes(ret)
 
