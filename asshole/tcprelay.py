@@ -440,6 +440,7 @@ class TCPRelayHandler(object):
         if self._is_local:
             data = self._encryptor.decrypt(data)
         else:
+            logging.debug('server got data: len(%d), %s', len(data), data[:10])
             data = self._encryptor.encrypt(data)
         try:
             self._write_to_sock(data, self._local_sock)

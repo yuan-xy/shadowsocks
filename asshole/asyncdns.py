@@ -401,12 +401,12 @@ class DNSResolver(object):
         elif common.is_ip(hostname):
             callback((hostname, hostname), None)
         elif hostname in self._hosts:
-            logging.debug('hit hosts: %s', hostname)
             ip = self._hosts[hostname]
+            logging.debug('hit hosts: %s, %s', hostname, ip)
             callback((hostname, ip), None)
         elif hostname in self._cache:
-            logging.debug('hit cache: %s', hostname)
             ip = self._cache[hostname]
+            logging.debug('hit cache: %s, %s', hostname, ip)
             callback((hostname, ip), None)
         else:
             if not is_valid_hostname(hostname):

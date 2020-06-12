@@ -1,5 +1,6 @@
 import nacl.utils
 from nacl.public import PrivateKey, Box
+import logging
 
 def _gen_keypair_by_seed(seed):
     key = PrivateKey(seed)
@@ -52,7 +53,7 @@ class NaclDecoder(NaclCrypto):
 
         while len(buffer) > 0:
             size = int.from_bytes(buffer[:2], byteorder='little', signed=False)
-            # print("size:", size, "buffer:", len(buffer), "data:", len(data))
+            logging.debug("NaclDecoder size: %d, buffer: %d, data: %d", size, len(buffer), len(data))
             if size > len(buffer) - 2:
                 self.encryptor._decrypt_buf = buffer
                 return bytes(ret)
