@@ -121,7 +121,7 @@ def check_config(config, is_local):
             logging.error('user can be used only on Unix')
             sys.exit(1)
 
-    encrypt.try_cipher(config['password'], config['method'])
+    encrypt.try_cipher(config['password'], config['method'], is_local)
 
 
 def get_config(is_local):
@@ -215,7 +215,7 @@ def get_config(is_local):
         sys.exit(2)
 
     config['password'] = to_bytes(config.get('password', b''))
-    config['method'] = to_str(config.get('method', 'aes-256-cfb'))
+    config['method'] = to_str(config.get('method', 'NACL'))
     config['port_password'] = config.get('port_password', None)
     config['timeout'] = int(config.get('timeout', 300))
     config['fast_open'] = config.get('fast_open', False)

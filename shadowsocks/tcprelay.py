@@ -106,7 +106,7 @@ class TCPRelayHandler(object):
         self._is_local = is_local
         self._stage = STAGE_INIT
         self._encryptor = encrypt.Encryptor(config['password'],
-                                            config['method'])
+                                            config['method'], self._is_local)
         self._fastopen_connected = False
         self._data_to_write_to_local = []
         self._data_to_write_to_remote = []

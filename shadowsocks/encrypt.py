@@ -24,7 +24,7 @@ import logging
 
 from shadowsocks import common
 from shadowsocks.crypto import rc4_md5, openssl, sodium, table
-
+from shadowsocks.crypto.nacl import NaclCrypto
 
 method_supported = {}
 method_supported.update(rc4_md5.ciphers)
@@ -40,8 +40,8 @@ def random_string(length):
 cached_keys = {}
 
 
-def try_cipher(key, method=None):
-    Encryptor(key, method)
+def try_cipher(key, method=None, is_local=None):
+    Encryptor(key, method, is_local)
 
 
 def EVP_BytesToKey(password, key_len, iv_len):
@@ -69,9 +69,14 @@ def EVP_BytesToKey(password, key_len, iv_len):
 
 
 class Encryptor(object):
-    def __init__(self, key, method):
+    def __init__(self, key, method, is_local=None):
         self.key = key
         self.method = method
+        if self.method == "NACL":
+            if is_local is None:
+                raise Exception("`is_local` is neeed for ASymmetric Encrypt")
+            self._is_local = is_local
+            return
         self.iv = None
         self.iv_sent = False
         self.cipher_iv = b''
@@ -111,6 +116,9 @@ class Encryptor(object):
     def encrypt(self, buf):
         if len(buf) == 0:
             return buf
+        if self.method == "NACL":
+            return NaclCrypto(self._is_local).encode(buf)
+
         if self.iv_sent:
             return self.cipher.update(buf)
         else:
@@ -120,6 +128,9 @@ class Encryptor(object):
     def decrypt(self, buf):
         if len(buf) == 0:
             return buf
+        if self.method == "NACL":
+            return NaclCrypto(self._is_local).decode(buf)
+
         if self.decipher is None:
             decipher_iv_len = self._method_info[1]
             decipher_iv = buf[:decipher_iv_len]
