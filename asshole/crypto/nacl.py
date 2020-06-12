@@ -46,6 +46,12 @@ class NaclDecoder(NaclCrypto):
         self.encryptor = encryptor
 
     def decode(self, data: bytes):
+        ret = self.decode0(data)
+        if not self.is_client:
+            logging.debug("Server got req: %s", ret)
+        return ret
+
+    def decode0(self, data: bytes):
         if len(data) == 0:
             return b''
         buffer = self.encryptor._decrypt_buf + data
