@@ -30,7 +30,7 @@ class NaclCrypto(object):
         else:
             return Box(remote_private_key, local_public_key)
 
-
+class NaclEncoder(NaclCrypto):
     def encode(self, data: bytes):
         if len(data) == 0:
             return b''
@@ -39,15 +39,31 @@ class NaclCrypto(object):
         return len(ret).to_bytes(2, byteorder="little", signed=False) + ret
 
 
+class NaclDecoder(NaclCrypto):
+    def __init__(self, is_client, encryptor):
+        self.is_client = is_client
+        self.encryptor = encryptor
+
     def decode(self, data: bytes):
         if len(data) == 0:
             return b''
-        buffer = data
+        buffer = self.encryptor._decrypt_buf + data
         ret = bytearray()
+
         while len(buffer) > 0:
             size = int.from_bytes(buffer[:2], byteorder='little', signed=False)
-            dstr = self.get_decode_box().decrypt(buffer[2:size+2])
-            # print(dstr)
+            # print("size:", size, "buffer:", len(buffer), "data:", len(data))
+            if size > len(buffer) - 2:
+                self.encryptor._decrypt_buf = buffer
+                return bytes(ret)
+
+            try:
+                dstr = self.get_decode_box().decrypt(buffer[2:size+2])
+            except Exception:
+                print("NaclDecoderERROR", size, len(buffer), len(self.encryptor._decrypt_buf))
+                self.encryptor._decrypt_buf = b''
+                return bytes(ret)
+
             ret.extend(dstr)
             buffer = buffer[size+2:]
         return bytes(ret)

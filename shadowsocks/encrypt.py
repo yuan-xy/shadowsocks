@@ -24,7 +24,7 @@ import logging
 
 from shadowsocks import common
 from shadowsocks.crypto import rc4_md5, openssl, sodium, table
-from shadowsocks.crypto.nacl import NaclCrypto
+from shadowsocks.crypto.nacl import NaclEncoder, NaclDecoder
 
 method_supported = {}
 method_supported.update(rc4_md5.ciphers)
@@ -76,6 +76,7 @@ class Encryptor(object):
             if is_local is None:
                 raise Exception("`is_local` is neeed for ASymmetric Encrypt")
             self._is_local = is_local
+            self._decrypt_buf = b''
             return
         self.iv = None
         self.iv_sent = False
@@ -117,7 +118,7 @@ class Encryptor(object):
         if len(buf) == 0:
             return buf
         if self.method == "NACL":
-            return NaclCrypto(self._is_local).encode(buf)
+            return NaclEncoder(self._is_local).encode(buf)
 
         if self.iv_sent:
             return self.cipher.update(buf)
@@ -129,7 +130,7 @@ class Encryptor(object):
         if len(buf) == 0:
             return buf
         if self.method == "NACL":
-            return NaclCrypto(self._is_local).decode(buf)
+            return NaclDecoder(self._is_local, self).decode(buf)
 
         if self.decipher is None:
             decipher_iv_len = self._method_info[1]

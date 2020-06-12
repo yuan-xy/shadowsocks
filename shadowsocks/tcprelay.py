@@ -193,6 +193,7 @@ class TCPRelayHandler(object):
             l = len(data)
             s = sock.send(data)
             if s < l:
+                breakpoint()
                 data = data[s:]
                 uncomplete = True
         except (OSError, IOError) as e:
