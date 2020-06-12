@@ -402,13 +402,13 @@ class TCPRelayHandler(object):
             return
         self._update_activity(len(data))
         if not is_local:
-            old_data = data
+            # old_data = data  # for debug
             data = self._encryptor.decrypt(data)
             if not data:
                 return
         if self._stage == STAGE_STREAM:
             if self._is_local:
-                old_data = data
+                # old_data = data
                 data = self._encryptor.encrypt(data)
             self._write_to_sock(data, self._remote_sock)
             return

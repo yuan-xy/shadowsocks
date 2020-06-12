@@ -171,7 +171,6 @@ def parse_header(data):
         else:
             logging.warn('header is too short')
     else:
-        breakpoint()
         logging.warn('unsupported addrtype %d, maybe wrong password or '
                      'encryption method' % addrtype)
     if dest_addr is None:
