@@ -78,17 +78,6 @@ def check_config(config, is_local):
         # no need to specify configuration for daemon stop
         return
 
-    if is_local and not config.get('password', None):
-        logging.error('password not specified')
-        print_help(is_local)
-        sys.exit(2)
-
-    if not is_local and not config.get('password', None) \
-            and not config.get('port_password', None):
-        logging.error('password or port_password not specified')
-        print_help(is_local)
-        sys.exit(2)
-
     if 'local_port' in config:
         config['local_port'] = int(config['local_port'])
 
