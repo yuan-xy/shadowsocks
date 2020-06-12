@@ -3,8 +3,8 @@
 . tests/assert.sh
 
 PYTHON="coverage run -a -p"
-LOCAL="$PYTHON shadowsocks/local.py"
-SERVER="$PYTHON shadowsocks/server.py"
+LOCAL="$PYTHON asshole/local.py"
+SERVER="$PYTHON asshole/server.py"
 
 assert "$LOCAL --version 2>&1 | grep Shadowsocks | awk -F\" \" '{print \$1}'" "Shadowsocks"
 assert "$SERVER --version 2>&1 | grep Shadowsocks | awk -F\" \" '{print \$1}'" "Shadowsocks"

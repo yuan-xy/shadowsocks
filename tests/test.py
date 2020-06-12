@@ -46,8 +46,8 @@ config = parser.parse_args()
 if config.with_coverage:
     python = ['coverage', 'run', '-p', '-a']
 
-client_args = python + ['shadowsocks/local.py', '-v']
-server_args = python + ['shadowsocks/server.py', '-v']
+client_args = python + ['asshole/local.py', '-v']
+server_args = python + ['asshole/server.py', '-v']
 
 if config.client_conf:
     client_args.extend(['-c', config.client_conf])
@@ -71,7 +71,7 @@ p4 = None
 p3_fin = False
 p4_fin = False
 
-# 1 shadowsocks started
+# 1 asshole started
 # 2 curl started
 # 3 curl finished
 # 4 dig started

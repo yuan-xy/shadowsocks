@@ -26,8 +26,8 @@ import logging
 import traceback
 import random
 
-from shadowsocks import encrypt, eventloop, shell, common
-from shadowsocks.common import parse_header
+from asshole import encrypt, eventloop, shell, common
+from asshole.common import parse_header
 
 # we clear at most TIMEOUTS_CLEAN_SIZE timeouts each time
 TIMEOUTS_CLEAN_SIZE = 512

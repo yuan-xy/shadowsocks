@@ -27,5 +27,5 @@ Read [Troubleshooting] and get help from forums or [mailing lists].
 later.
 
 
-[Troubleshooting]: https://github.com/clowwindy/shadowsocks/wiki/Troubleshooting
-[mailing lists]:   https://groups.google.com/forum/#!forum/shadowsocks
+[Troubleshooting]: https://github.com/clowwindy/asshole/wiki/Troubleshooting
+[mailing lists]:   https://groups.google.com/forum/#!forum/asshole

@@ -6,22 +6,22 @@ with codecs.open('README.rst', encoding='utf-8') as f:
     long_description = f.read()
 
 setup(
-    name="shadowsocks",
+    name="asshole",
     version="2.8.2",
     license='http://www.apache.org/licenses/LICENSE-2.0',
     description="A fast tunnel proxy that help you get through firewalls",
     author='clowwindy',
     author_email='clowwindy42@gmail.com',
-    url='https://github.com/shadowsocks/shadowsocks',
-    packages=['shadowsocks', 'shadowsocks.crypto'],
+    url='https://github.com/asshole/asshole',
+    packages=['asshole', 'asshole.crypto'],
     package_data={
-        'shadowsocks': ['README.rst', 'LICENSE']
+        'asshole': ['README.rst', 'LICENSE']
     },
     install_requires=[],
     entry_points="""
     [console_scripts]
-    sslocal = shadowsocks.local:main
-    ssserver = shadowsocks.server:main
+    sslocal = asshole.local:main
+    ssserver = asshole.server:main
     """,
     classifiers=[
         'License :: OSI Approved :: Apache Software License',

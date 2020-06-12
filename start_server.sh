@@ -1,2 +1,2 @@
-python3 shadowsocks/server.py -p 443 -k password -d start
+python3 asshole/server.py -p 443 -k password -d start
 

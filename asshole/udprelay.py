@@ -29,21 +29,21 @@
 # | 2  |  1   |  1   | Variable |    2     | Variable |
 # +----+------+------+----------+----------+----------+
 
-# shadowsocks UDP Request (before encrypted)
+# asshole UDP Request (before encrypted)
 # +------+----------+----------+----------+
 # | ATYP | DST.ADDR | DST.PORT |   DATA   |
 # +------+----------+----------+----------+
 # |  1   | Variable |    2     | Variable |
 # +------+----------+----------+----------+
 
-# shadowsocks UDP Response (before encrypted)
+# asshole UDP Response (before encrypted)
 # +------+----------+----------+----------+
 # | ATYP | DST.ADDR | DST.PORT |   DATA   |
 # +------+----------+----------+----------+
 # |  1   | Variable |    2     | Variable |
 # +------+----------+----------+----------+
 
-# shadowsocks UDP Request and Response (after encrypted)
+# asshole UDP Request and Response (after encrypted)
 # +-------+--------------+
 # |   IV  |    PAYLOAD   |
 # +-------+--------------+
@@ -54,8 +54,8 @@
 # ------------------
 # `dest`    means destination server, which is from DST fields in the SOCKS5
 #           request
-# `local`   means local server of shadowsocks
-# `remote`  means remote server of shadowsocks
+# `local`   means local server of asshole
+# `remote`  means remote server of asshole
 # `client`  means UDP clients that connects to other servers
 # `server`  means the UDP server that handles user requests
 
@@ -68,8 +68,8 @@ import struct
 import errno
 import random
 
-from shadowsocks import encrypt, eventloop, lru_cache, common, shell
-from shadowsocks.common import parse_header, pack_addr
+from asshole import encrypt, eventloop, lru_cache, common, shell
+from asshole.common import parse_header, pack_addr
 
 
 BUF_SIZE = 65536

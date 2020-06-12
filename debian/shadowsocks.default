@@ -1,6 +1,6 @@
-# Defaults for shadowsocks initscript
-# sourced by /etc/init.d/shadowsocks
-# installed at /etc/default/shadowsocks by the maintainer scripts
+# Defaults for asshole initscript
+# sourced by /etc/init.d/asshole
+# installed at /etc/default/asshole by the maintainer scripts
 
 USERID="nobody"
 
@@ -9,4 +9,4 @@ USERID="nobody"
 #
 
 # Additional options that are passed to the Daemon.
-DAEMON_OPTS="-q -c /etc/shadowsocks/config.json"
+DAEMON_OPTS="-q -c /etc/asshole/config.json"

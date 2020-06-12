@@ -1,6 +1,6 @@
 Format: http://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
-Upstream-Name: shadowsocks
-Source: https://github.com/clowwindy/shadowsocks
+Upstream-Name: asshole
+Source: https://github.com/clowwindy/asshole
 
 Files: debian/*
 Copyright: 2014 Shell.Xu <shell909090@gmail.com>

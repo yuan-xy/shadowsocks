@@ -77,11 +77,11 @@ fi
 run_test tests/test_udp_src.sh
 run_test tests/test_command.sh
 
-coverage combine && coverage report --include=shadowsocks/*
+coverage combine && coverage report --include=asshole/*
 rm -rf htmlcov
 rm -rf tmp
-coverage html --include=shadowsocks/*
+coverage html --include=asshole/*
 
-coverage report --include=shadowsocks/* | tail -n1 | rev | cut -d' ' -f 1 | rev > /tmp/shadowsocks-coverage
+coverage report --include=asshole/* | tail -n1 | rev | cut -d' ' -f 1 | rev > /tmp/asshole-coverage
 
 exit $result

@@ -1,13 +1,13 @@
 #!/bin/sh
 ### BEGIN INIT INFO
-# Provides:          shadowsocks
+# Provides:          asshole
 # Required-Start:    $network $local_fs $remote_fs
 # Required-Stop:     $network $local_fs $remote_fs
 # Default-Start:     2 3 4 5
 # Default-Stop:      0 1 6
 # Short-Description: Fast tunnel proxy that helps you bypass firewalls
 # Description:       A secure socks5 proxy, designed to protect your Internet traffic.
-#		     This package contain local and server part of shadowsocks, a fast,
+#		     This package contain local and server part of asshole, a fast,
 #		     powerful tunnel proxy to bypass firewalls.
 ### END INIT INFO
 
@@ -15,8 +15,8 @@
 
 # PATH should only include /usr/* if it runs after the mountnfs.sh script
 PATH=/sbin:/usr/sbin:/bin:/usr/bin
-DESC=shadowsocks             # Introduce a short description here
-NAME=shadowsocks             # Introduce the short server's name here
+DESC=asshole             # Introduce a short description here
+NAME=asshole             # Introduce the short server's name here
 DAEMON=/usr/bin/ssserver     # Introduce the server's location here
 DAEMON_ARGS=""               # Arguments to run the daemon with
 PIDFILE=/var/run/$NAME.pid

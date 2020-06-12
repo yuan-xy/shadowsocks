@@ -5,10 +5,10 @@ URL=http://127.0.0.1/file
 
 
 # setup processes
-$PYTHON shadowsocks/local.py -c tests/graceful.json &
+$PYTHON asshole/local.py -c tests/graceful.json &
 LOCAL=$!
 
-$PYTHON shadowsocks/server.py -c tests/graceful.json --forbidden-ip "" &
+$PYTHON asshole/server.py -c tests/graceful.json --forbidden-ip "" &
 SERVER=$!
 
 python tests/graceful_server.py &
@@ -24,7 +24,7 @@ sleep 1
 # graceful restart server: send SIGQUIT to old process and start a new one
 kill -s SIGQUIT $SERVER
 sleep 0.5
-$PYTHON shadowsocks/server.py -c tests/graceful.json --forbidden-ip "" &
+$PYTHON asshole/server.py -c tests/graceful.json --forbidden-ip "" &
 NEWSERVER=$!
 
 sleep 1

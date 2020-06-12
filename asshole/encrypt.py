@@ -22,9 +22,9 @@ import sys
 import hashlib
 import logging
 
-from shadowsocks import common
-from shadowsocks.crypto import rc4_md5, openssl, sodium, table
-from shadowsocks.crypto.nacl import NaclEncoder, NaclDecoder
+from asshole import common
+from asshole.crypto import rc4_md5, openssl, sodium, table
+from asshole.crypto.nacl import NaclEncoder, NaclDecoder
 
 method_supported = {}
 method_supported.update(rc4_md5.ciphers)

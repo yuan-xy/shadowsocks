@@ -23,8 +23,8 @@ import json
 import sys
 import getopt
 import logging
-from shadowsocks.common import to_bytes, to_str, IPNetwork
-from shadowsocks import encrypt
+from asshole.common import to_bytes, to_str, IPNetwork
+from asshole import encrypt
 
 
 VERBOSE_LEVEL = 5
@@ -53,11 +53,11 @@ def print_exception(e):
         traceback.print_exc()
 
 
-def print_shadowsocks():
+def print_asshole():
     version = ''
     try:
         import pkg_resources
-        version = pkg_resources.get_distribution('shadowsocks').version
+        version = pkg_resources.get_distribution('asshole').version
     except Exception:
         pass
     print('Shadowsocks %s' % version)
@@ -193,7 +193,7 @@ def get_config(is_local):
                     print_server_help()
                 sys.exit(0)
             elif key == '--version':
-                print_shadowsocks()
+                print_asshole()
                 sys.exit(0)
             elif key == '-d':
                 config['daemon'] = to_str(value)
@@ -220,8 +220,8 @@ def get_config(is_local):
     config['timeout'] = int(config.get('timeout', 300))
     config['fast_open'] = config.get('fast_open', False)
     config['workers'] = config.get('workers', 1)
-    config['pid-file'] = config.get('pid-file', '/var/run/shadowsocks.pid')
-    config['log-file'] = config.get('log-file', '/var/log/shadowsocks.log')
+    config['pid-file'] = config.get('pid-file', '/var/run/asshole.pid')
+    config['log-file'] = config.get('log-file', '/var/log/asshole.log')
     config['verbose'] = config.get('verbose', False)
     config['local_address'] = to_str(config.get('local_address', '127.0.0.1'))
     config['local_port'] = config.get('local_port', 1080)
@@ -298,7 +298,7 @@ General options:
   -q, -qq                quiet mode, only show warnings/errors
   --version              show version information
 
-Online help: <https://github.com/shadowsocks/shadowsocks>
+Online help: <https://github.com/asshole/asshole>
 ''')
 
 
@@ -330,7 +330,7 @@ General options:
   -q, -qq                quiet mode, only show warnings/errors
   --version              show version information
 
-Online help: <https://github.com/shadowsocks/shadowsocks>
+Online help: <https://github.com/asshole/asshole>
 ''')
 
 

@@ -5,10 +5,10 @@ URL=http://127.0.0.1/file
 
 mkdir -p tmp
 
-$PYTHON shadowsocks/local.py -c tests/aes.json &
+$PYTHON asshole/local.py -c tests/aes.json &
 LOCAL=$!
 
-$PYTHON shadowsocks/server.py -c tests/aes.json --forbidden-ip "" &
+$PYTHON asshole/server.py -c tests/aes.json --forbidden-ip "" &
 SERVER=$!
 
 sleep 3
