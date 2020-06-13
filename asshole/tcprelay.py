@@ -342,6 +342,7 @@ class TCPRelayHandler(object):
         return remote_sock
 
     def _handle_dns_resolved(self, result, error):
+        logging.debug("dns resolved: %s, %s", result, error)
         if error:
             self._log_error(error)
             self.destroy()
@@ -373,6 +374,7 @@ class TCPRelayHandler(object):
                         try:
                             remote_sock.connect((remote_addr, remote_port))
                         except (OSError, IOError) as e:
+                            logging.warning("connecting error %s", (remote_addr, remote_port))
                             if eventloop.errno_from_exception(e) == \
                                     errno.EINPROGRESS:
                                 pass
