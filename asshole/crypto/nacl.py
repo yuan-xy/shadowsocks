@@ -31,13 +31,18 @@ class NaclCrypto(object):
         else:
             return Box(remote_private_key, local_public_key)
 
+HEAD_LEN = 3
+MAX_SIZE = int.from_bytes(b'\xff'*HEAD_LEN, byteorder='little', signed=False)
+
 class NaclEncoder(NaclCrypto):
     def encode(self, data: bytes):
         if len(data) == 0:
             return b''
         ret = self.get_encode_box().encrypt(data)
-        # print(ret)
-        return len(ret).to_bytes(2, byteorder="little", signed=False) + ret
+        size = len(ret)
+        if size > MAX_SIZE:
+            raise ValueError(f"data length {size} is too large.")
+        return size.to_bytes(HEAD_LEN, byteorder="little", signed=False) + ret
 
 
 class NaclDecoder(NaclCrypto):
@@ -58,20 +63,20 @@ class NaclDecoder(NaclCrypto):
         ret = bytearray()
 
         while len(buffer) > 0:
-            size = int.from_bytes(buffer[:2], byteorder='little', signed=False)
+            size = int.from_bytes(buffer[:HEAD_LEN], byteorder='little', signed=False)
             logging.debug("NaclDecoder size: %d, buffer: %d, data: %d", size, len(buffer), len(data))
-            if size > len(buffer) - 2:
+            if size > len(buffer) - HEAD_LEN:
                 self.encryptor._decrypt_buf = buffer
                 return bytes(ret)
 
             try:
-                dstr = self.get_decode_box().decrypt(buffer[2:size+2])
+                dstr = self.get_decode_box().decrypt(buffer[HEAD_LEN:size+HEAD_LEN])
             except Exception:
                 logging.error("NaclDecoderERROR: %d, %d, %d, %d", size, len(buffer), len(data), len(self.encryptor._decrypt_buf))
                 self.encryptor._decrypt_buf = b''
                 return bytes(ret)
 
             ret.extend(dstr)
-            buffer = buffer[size+2:]
+            buffer = buffer[size+HEAD_LEN:]
         return bytes(ret)
 
