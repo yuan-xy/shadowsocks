@@ -374,10 +374,11 @@ class TCPRelayHandler(object):
                         try:
                             remote_sock.connect((remote_addr, remote_port))
                         except (OSError, IOError) as e:
-                            logging.warning("connecting error %s", (remote_addr, remote_port))
                             if eventloop.errno_from_exception(e) == \
                                     errno.EINPROGRESS:
                                 pass
+                            else:
+                                logging.warning("connecting error %s", (remote_addr, remote_port))
                         self._loop.add(remote_sock,
                                        eventloop.POLL_ERR | eventloop.POLL_OUT,
                                        self._server)
@@ -448,7 +449,7 @@ class TCPRelayHandler(object):
             logging.log(shell.VERBOSE_LEVEL, 'client got data: len(%d), %s', len(data), self)
             data = self._encryptor.decrypt(data)
         else:
-            # logging.log(shell.VERBOSE_LEVEL, 'server got data: len(%d), %s', len(data), data[:20])
+            logging.log(shell.VERBOSE_LEVEL, 'server got data: len(%d), %s', len(data), data[:20])
             data = self._encryptor.encrypt(data)
         try:
             self._write_to_sock(data, self._local_sock)
