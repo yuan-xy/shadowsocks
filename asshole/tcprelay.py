@@ -462,6 +462,8 @@ class TCPRelayHandler(object):
         if self._data_to_write_to_local:
             data = b''.join(self._data_to_write_to_local)
             self._data_to_write_to_local = []
+            if not self._is_local:
+                logging.debug("send data back: len(%d), %s", len(data), self._local_sock)
             self._write_to_sock(data, self._local_sock)
         else:
             self._update_stream(STREAM_DOWN, WAIT_STATUS_READING)
