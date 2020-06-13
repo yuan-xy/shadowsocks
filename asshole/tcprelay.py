@@ -106,7 +106,7 @@ class TCPRelayHandler(object):
         self._is_local = is_local
         self._stage = STAGE_INIT
         self._encryptor = encrypt.Encryptor(config['password'],
-                                            config['method'], self._is_local)
+                                            config['method'], self._is_local, self)
         self._fastopen_connected = False
         self._data_to_write_to_local = []
         self._data_to_write_to_remote = []
@@ -132,6 +132,9 @@ class TCPRelayHandler(object):
         # default __hash__ is id / 16
         # we want to eliminate collisions
         return id(self)
+
+    def __str__(self):
+        return f"{self._local_sock.getpeername()}, {self.remote_address}"
 
     @property
     def remote_address(self):
@@ -440,6 +443,7 @@ class TCPRelayHandler(object):
             return
         self._update_activity(len(data))
         if self._is_local:
+            logging.log(shell.VERBOSE_LEVEL, 'client got data: len(%d), %s', len(data), self)
             data = self._encryptor.decrypt(data)
         else:
             # logging.log(shell.VERBOSE_LEVEL, 'server got data: len(%d), %s', len(data), data[:20])

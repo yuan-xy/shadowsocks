@@ -69,7 +69,8 @@ def EVP_BytesToKey(password, key_len, iv_len):
 
 
 class Encryptor(object):
-    def __init__(self, key, method, is_local=None):
+    def __init__(self, key, method, is_local=None, handler=None):
+        self.handler = handler
         self.key = key
         self.method = method
         if self.method == "NACL":

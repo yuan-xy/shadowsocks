@@ -1,6 +1,8 @@
 import nacl.utils
 from nacl.public import PrivateKey, Box
 import logging
+from asshole import shell
+
 
 def _gen_keypair_by_seed(seed):
     key = PrivateKey(seed)
@@ -33,6 +35,7 @@ class NaclCrypto(object):
 
 HEAD_LEN = 3
 MAX_SIZE = int.from_bytes(b'\xff'*HEAD_LEN, byteorder='little', signed=False)
+is_decoding = False
 
 class NaclEncoder(NaclCrypto):
     def encode(self, data: bytes):
@@ -51,7 +54,13 @@ class NaclDecoder(NaclCrypto):
         self.encryptor = encryptor
 
     def decode(self, data: bytes):
+        global is_decoding
+        if is_decoding:
+            print("last decode not finished yet.")
+            raise IOError("last decode not finished yet.")
+        is_decoding = True
         ret = self.decode0(data)
+        is_decoding = False
         if not self.is_client:
             logging.debug("Server got req: %s", ret)
         return ret
@@ -64,10 +73,12 @@ class NaclDecoder(NaclCrypto):
 
         while len(buffer) > 0:
             size = int.from_bytes(buffer[:HEAD_LEN], byteorder='little', signed=False)
-            logging.debug("NaclDecoder size: %d, buffer: %d, data: %d", size, len(buffer), len(data))
             if size > len(buffer) - HEAD_LEN:
                 self.encryptor._decrypt_buf = buffer
                 return bytes(ret)
+
+            logging.log(shell.VERBOSE_LEVEL, "NaclDecoder size: %d, buffer: %d, data: %d, %s",
+                size, len(buffer), len(data), self.encryptor.handler)
 
             try:
                 dstr = self.get_decode_box().decrypt(buffer[HEAD_LEN:size+HEAD_LEN])
@@ -78,5 +89,8 @@ class NaclDecoder(NaclCrypto):
 
             ret.extend(dstr)
             buffer = buffer[size+HEAD_LEN:]
+
+        assert len(buffer) == 0
+        self.encryptor._decrypt_buf = b''
         return bytes(ret)
 
