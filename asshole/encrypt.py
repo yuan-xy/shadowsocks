@@ -144,9 +144,16 @@ class Encryptor(object):
         return self.decipher.update(buf)
 
 
-def encrypt_all(password, method, op, data):
+def encrypt_all(password, method, op, data, is_local=False):
     result = []
     method = method.lower()
+    if method == "nacl":
+        enc = Encryptor("", method, is_local, None)
+        if op:
+            return NaclEncoder(is_local).encode(data)
+        else:
+            return NaclDecoder(is_local, self).decode(data)
+
     (key_len, iv_len, m) = method_supported[method]
     if key_len > 0:
         key, _ = EVP_BytesToKey(password, key_len, iv_len)

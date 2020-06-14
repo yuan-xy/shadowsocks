@@ -157,7 +157,7 @@ class UDPRelay(object):
             else:
                 data = data[3:]
         else:
-            data = encrypt.encrypt_all(self._password, self._method, 0, data)
+            data = encrypt.encrypt_all(self._password, self._method, 0, data, self._is_local)
             # decrypt data
             if not data:
                 logging.debug('UDP handle_server: data is empty after decrypt')
@@ -202,7 +202,7 @@ class UDPRelay(object):
             self._eventloop.add(client, eventloop.POLL_IN, self)
 
         if self._is_local:
-            data = encrypt.encrypt_all(self._password, self._method, 1, data)
+            data = encrypt.encrypt_all(self._password, self._method, 1, data, self._is_local)
             if not data:
                 return
         else:
@@ -232,12 +232,12 @@ class UDPRelay(object):
                 return
             data = pack_addr(r_addr[0]) + struct.pack('>H', r_addr[1]) + data
             response = encrypt.encrypt_all(self._password, self._method, 1,
-                                           data)
+                                           data, self._is_local)
             if not response:
                 return
         else:
             data = encrypt.encrypt_all(self._password, self._method, 0,
-                                       data)
+                                       data, self._is_local)
             if not data:
                 return
             header_result = parse_header(data)
