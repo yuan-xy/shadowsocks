@@ -9,29 +9,37 @@ def _gen_keypair_by_seed(seed):
     return key.public_key, key
 
 
-local_public_key, local_private_key = _gen_keypair_by_seed(
-    bytes.fromhex("82001573a003fd3b7fd72ffb0eaf63aac62f12deb629dca72785a66268ec758a")
-)
-remote_public_key, remote_private_key = _gen_keypair_by_seed(
-    bytes.fromhex("82001573a003fd3b7fd72ffb0eaf63aac62f12deb629dca72785a66268ec758c")
-)
-
-
 class NaclCrypto(object):
-    def __init__(self, is_client):
-        self.is_client = is_client
+    def __init__(self, password, is_local):
+        self.password_hex = password.hex()
+        self.is_local = is_local
+        self.gen_key()
+
+    def gen_seed(self, is_local=True) -> bytes:
+        if is_local:
+            prefix = "0"
+        else:
+            prefix = "1"
+        magic = "2001573a003fd3b7fd72ffb0eaf63aac62f12deb629dca72785a66268ec758a"
+        magic = self.password_hex + magic[len(self.password_hex):]
+        return bytes.fromhex(prefix + magic)
+
+    def gen_key(self):
+        self.local_public_key, self.local_private_key = _gen_keypair_by_seed(self.gen_seed(True))
+        self.remote_public_key, self.remote_private_key = _gen_keypair_by_seed(self.gen_seed(False))
+
 
     def get_encode_box(self):
-        if self.is_client:
-            return Box(local_private_key, remote_public_key)
+        if self.is_local:
+            return Box(self.local_private_key, self.remote_public_key)
         else:
-            return Box(remote_private_key, local_public_key)
+            return Box(self.remote_private_key, self.local_public_key)
 
     def get_decode_box(self):
-        if self.is_client:
-            return Box(local_private_key, remote_public_key)
+        if self.is_local:
+            return Box(self.local_private_key, self.remote_public_key)
         else:
-            return Box(remote_private_key, local_public_key)
+            return Box(self.remote_private_key, self.local_public_key)
 
 HEAD_LEN = 3
 MAX_SIZE = int.from_bytes(b'\xff'*HEAD_LEN, byteorder='little', signed=False)
@@ -49,8 +57,8 @@ class NaclEncoder(NaclCrypto):
 
 
 class NaclDecoder(NaclCrypto):
-    def __init__(self, is_client, encryptor):
-        self.is_client = is_client
+    def __init__(self, password, is_local, encryptor):
+        super().__init__(password, is_local)
         self.encryptor = encryptor
 
     def decode(self, data: bytes):
@@ -61,7 +69,7 @@ class NaclDecoder(NaclCrypto):
         is_decoding = True
         ret = self.decode0(data)
         is_decoding = False
-        if not self.is_client:
+        if not self.is_local:
             logging.debug("Server got req: %s", ret)
         return ret
 

@@ -119,7 +119,7 @@ class Encryptor(object):
         if len(buf) == 0:
             return buf
         if self.method == "NACL":
-            return NaclEncoder(self._is_local).encode(buf)
+            return NaclEncoder(self.key, self._is_local).encode(buf)
 
         if self.iv_sent:
             return self.cipher.update(buf)
@@ -131,7 +131,7 @@ class Encryptor(object):
         if len(buf) == 0:
             return buf
         if self.method == "NACL":
-            return NaclDecoder(self._is_local, self).decode(buf)
+            return NaclDecoder(self.key, self._is_local, self).decode(buf)
 
         if self.decipher is None:
             decipher_iv_len = self._method_info[1]
@@ -148,11 +148,11 @@ def encrypt_all(password, method, op, data, is_local=False):
     result = []
     method = method.lower()
     if method == "nacl":
-        enc = Encryptor("", method, is_local, None)
+        enc = Encryptor(password, method, is_local, None)
         if op:
-            return NaclEncoder(is_local).encode(data)
+            return NaclEncoder(password, is_local).encode(data)
         else:
-            return NaclDecoder(is_local, self).decode(data)
+            return NaclDecoder(password, is_local, self).decode(data)
 
     (key_len, iv_len, m) = method_supported[method]
     if key_len > 0:
