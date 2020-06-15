@@ -30,14 +30,14 @@ pip install -r requirements.txt
 
 ###2. Start Remote Server
 ```
-python3 asshole/server.py -p your_port -d start -v
+python3 asshole/server.py -k your_pass -p your_port -d start -v
 ```
-change `your_port` to real port.
+change `your_port` to real port, `your_pass` to your real password.
 
 
 ###3. Start Local Server
 ```
-python3 asshole/local.py -s remote_server_ip -p remote_port -b 0.0.0.0 -v
+python3 asshole/local.py -k your_pass -s remote_server_ip -p remote_port -b 0.0.0.0 -v
 ```
 change `remote_server_ip` and `remote_port` to your remote server ip and port.
 
