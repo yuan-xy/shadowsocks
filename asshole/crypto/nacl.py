@@ -10,10 +10,10 @@ def _gen_keypair_by_seed(seed):
 
 
 local_public_key, local_private_key = _gen_keypair_by_seed(
-    bytes.fromhex("82001573a003fd3b7fd72ffb0eaf63aac62f12deb629dca72785a66268ec758a")
+    bytes.fromhex("02001573a003fd3b7fd72ffb0eaf63aac62f12deb629dca72785a66268ec758a")
 )
 remote_public_key, remote_private_key = _gen_keypair_by_seed(
-    bytes.fromhex("82001573a003fd3b7fd72ffb0eaf63aac62f12deb629dca72785a66268ec758c")
+    bytes.fromhex("02001573a003fd3b7fd72ffb0eaf63aac62f12deb629dca72785a66268ec758c")
 )
 
 
